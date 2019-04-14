@@ -22,12 +22,9 @@ class MyClass a where
 
 -- with brace syntax sugar
 instance myClassRecord ::
-  ( Row.Cons "hi" String tail row
-  , TypeEquals { hi :: String | tail } { | row }
+  ( TypeEquals { hi :: String | tail } { | row }
   ) => MyClass { | row } where
-  method r = Record.get (SProxy :: _ "hi") r'
-    where
-      r' = from r
+  method r = (from r).hi -- don't need Record.get if concretely known anyway
 
 main :: Effect Unit
 main = do
